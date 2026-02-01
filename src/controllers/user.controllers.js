@@ -2,7 +2,6 @@ import { ansyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js"
 import { User } from "../models/user.moodel.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
-import { ApiError } from "../utils/apiError.js";
 import { ApiResponce } from "../utils/apiResponce.js";
 
 const registerUser = ansyncHandler(async (req, res) => {
