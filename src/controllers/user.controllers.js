@@ -34,12 +34,12 @@ const registerUser = ansyncHandler(async (req, res) => {
     // const avatarLocalPath = req.files?.avatar[0]?.path
     let avatarLocalPath;
     if (req.files && Array.isArray(req.files.avatar) && req.files.avatar.length > 0) {
-        const avatarLocalPath = req.files.avatar[0].path
+         avatarLocalPath = req.files.avatar[0].path
     }
     // const coverImageLocalPath = req.files?.coverImage[0]?.path
     let coverImageLocalPath;
     if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
-        const coverImageLocalPath = req.files.coverImage[0].path
+        coverImageLocalPath = req.files.coverImage[0].path
     }
 
     if (!avatarLocalPath) {
