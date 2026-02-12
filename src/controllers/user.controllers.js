@@ -8,7 +8,7 @@ const generateAccessAndRefereshTokens = async (userId) => {
     try {
         const user = await User.findById(userId)
         const accessToken = user.generateAccessToken()
-        const refreshToken = user.generateRefereshToken()
+        const refreshToken = user.generateRefreshToken()
 
         user.refreshToken = refreshToken
         await user.save({ validateBeforeSave: false })
@@ -16,6 +16,7 @@ const generateAccessAndRefereshTokens = async (userId) => {
         return { accessToken, refreshToken }
 
     } catch (error) {
+        console.log("REAL ERROR:", error)
         throw new ApiError(500, "Somethin went wrong while generating referesh and access tokes")
     }
 }
@@ -57,6 +58,8 @@ const registerUser = ansyncHandler(async (req, res) => {
     if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
         coverImageLocalPath = req.files.coverImage[0].path
     }
+
+    console.log("file:", req.file);
 
     if (!avatarLocalPath) {
         throw new ApiError(400, "Avatar file is required")
@@ -104,9 +107,9 @@ const loginUser = ansyncHandler(async (req, res) => {
     // access and referesh token
     // send cookie
 
-    const { userName, email, password } = req.body;
+    const { username, email, password } = req.body;
 
-    if (!userName || !email) {
+    if (!(username || email)) {
         throw new ApiError(400, "userName or password is required")
     }
 
@@ -115,7 +118,7 @@ const loginUser = ansyncHandler(async (req, res) => {
     }
 
     const user = await User.findOne({
-        $or: [{ userName }, { email }]
+        $or: [{ username }, { email }]
     })
 
     if (!user) {
@@ -167,9 +170,9 @@ const logoutUser = ansyncHandler(async (req, res) => {
     }
 
     return res
-    .status(200)
-    .clearCookie("accessToken",options )
-    .clearCookie("refreshToken", options)
+        .status(200)
+        .clearCookie("accessToken", options)
+        .clearCookie("refreshToken", options)
 })
 
 export {
